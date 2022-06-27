@@ -29,7 +29,7 @@ const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
         </nav>
     );
 };
-Pagination.propPropTypes = {
+Pagination.propTypes = {
     itemsCount: PropTypes.number.isRequired,
     pageSize: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
@@ -37,8 +37,3 @@ Pagination.propPropTypes = {
 };
 
 export default Pagination;
-
-// const {itemsCount, pageSize} = props
-// const pageCount = Math.ceil( itemsCount/pageSize)
-// console.log(pageCount);
-// return null

@@ -10,9 +10,9 @@ const Bookmark = ({ status, onToggleBookMark, id }) => {
     );
 };
 Bookmark.propTypes = {
-    status: PropTypes.string.isRequired,
+    status: PropTypes.bool.isRequired,
     onToggleBookMark: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired
+    id: PropTypes.string.isRequired
 };
 
 export default Bookmark;
