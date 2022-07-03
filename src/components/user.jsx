@@ -1,8 +1,7 @@
 import React from "react";
-import Qualitie from "./qualitie";
-import BookMark from "./bookmark";
 import PropTypes from "prop-types";
-
+import Quality from "./qualitie";
+import BookMark from "./bookmark";
 const User = ({
     _id,
     name,
@@ -15,33 +14,28 @@ const User = ({
     onToggleBookMark
 }) => {
     return (
-        <tr key={_id}>
+        <tr>
             <td>{name}</td>
             <td>
-                {qualities.map((item) => (
-                    <Qualitie
-                        key={item._id}
-                        name={item.name}
-                        color={item.color}
-                    />
+                {qualities.map((qual) => (
+                    <Quality {...qual} key={qual._id} />
                 ))}
             </td>
             <td>{profession.name}</td>
             <td>{completedMeetings}</td>
-            <td>{rate}/5</td>
+            <td>{rate} /5</td>
             <td>
                 <BookMark
                     status={bookmark}
-                    onToggleBookMark={onToggleBookMark}
-                    id={_id}
+                    onClick={() => onToggleBookMark(_id)}
                 />
             </td>
             <td>
                 <button
-                    className={"badge bg-danger"}
                     onClick={() => onDelete(_id)}
+                    className="btn btn-danger"
                 >
-                    Удалить
+                    delete
                 </button>
             </td>
         </tr>
