@@ -7,14 +7,18 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
 import _ from "lodash";
-const Users = () => {
+import UserPage from "./userPage";
+
+const Users = ({ match }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
 
-    const [users, setUsers] = useState();
+    const userId = match.params.userId;
+
+    const [users, setUsers] = useState([]);
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -22,20 +26,20 @@ const Users = () => {
         setUsers(users.filter((user) => user._id !== userId));
     };
     const handleToggleBookMark = (id) => {
-        setUsers(
-            users.map((user) => {
-                if (user._id === id) {
-                    return { ...user, bookmark: !user.bookmark };
-                }
-                return user;
-            })
-        );
-        console.log(id);
+        const newArray = users.map((user) => {
+            if (user._id === id) {
+                return { ...user, bookmark: !user.bookmark };
+            }
+            return user;
+        });
+        setUsers(newArray);
     };
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
-    }, []);
+    }, [currentPage]);
+    /* currentPage добавил */
+
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
@@ -47,7 +51,6 @@ const Users = () => {
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
-
     const handleSort = (item) => {
         setSortBy(item);
     };
@@ -71,8 +74,9 @@ const Users = () => {
         const clearFilter = () => {
             setSelectedProf();
         };
-
-        return (
+        return userId ? (
+            <UserPage userId={userId} users={users} />
+        ) : (
             <div className="d-flex">
                 {professions && (
                     <div className="d-flex flex-column flex-shrink-0 p-3">
@@ -116,7 +120,8 @@ const Users = () => {
     return "loading...";
 };
 Users.propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    match: PropTypes.object.isRequired
 };
 
 export default Users;
